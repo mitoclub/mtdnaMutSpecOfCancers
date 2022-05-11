@@ -1,0 +1,451 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Mitochondial mutational spectrum of cancer as a function of position, tissue and VAF},
+  pdfauthor={Konstantin Popadin},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\title{Mitochondial mutational spectrum of cancer as a function of position,
+tissue and VAF}
+\author{Konstantin Popadin}
+\date{11/05/2022}
+
+\begin{document}
+\maketitle
+
+\hypertarget{background}{%
+\subsection{Background}\label{background}}
+
+Cancer paper: Dataset is 7611 somatic mtDNA mutations Hypothesis:
+
+\hypertarget{read-cancer-dataset-and-describe-key-variables}{%
+\paragraph{1. Read cancer dataset and describe key
+variables}\label{read-cancer-dataset-and-describe-key-variables}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Mut =}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"../data/1raw/mtDNA_snv_Oct2016.txt"}\NormalTok{, }\DataTypeTok{head =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =} \StringTok{'}\CharTok{\textbackslash{}t}\StringTok{'}\NormalTok{)  }
+\KeywordTok{names}\NormalTok{(Mut)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "index"                    "is_blacklist_removed"    
+##  [3] "is_included_in_may_pilot" "sample"                  
+##  [5] "tissue"                   "Tier2"                   
+##  [7] "chrom"                    "position"                
+##  [9] "ref"                      "var"                     
+## [11] "normal_reads1"            "normal_reads2"           
+## [13] "normal_var_freq"          "normal_gt"               
+## [15] "tumor_reads1"             "tumor_reads2"            
+## [17] "tumor_var_freq"           "outlier_mismatchnum"     
+## [19] "outlier_n_VAF"            "was_filtered"            
+## [21] "sample_included"          "index.1"                 
+## [23] "sample.1"                 "tissue.1"                
+## [25] "chrom.1"                  "position.1"              
+## [27] "ref.1"                    "var.1"                   
+## [29] "mtDB"                     "mtDB_freq"               
+## [31] "Levin2012"                "Annot"                   
+## [33] "Nearest_5p"               "Nearest_3p"              
+## [35] "X"                        "X.1"                     
+## [37] "X.2"                      "X.3"                     
+## [39] "variant_p_value"          "somatic_p_value"         
+## [41] "tumor_reads1_plus"        "tumor_reads1_minus"      
+## [43] "tumor_reads2_plus"        "tumor_reads2_minus"      
+## [45] "normal_reads1_plus"       "normal_reads1_minus"     
+## [47] "normal_reads2_plus"       "normal_reads2_minus"     
+## [49] "pval"                     "is_nonsense"             
+## [51] "is_missense"              "is_silent"               
+## [53] "is_tRNA"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Mut}\OperatorTok{$}\NormalTok{Subst =}\StringTok{ }\KeywordTok{paste}\NormalTok{(Mut}\OperatorTok{$}\NormalTok{ref,Mut}\OperatorTok{$}\NormalTok{var,}\DataTypeTok{sep =} \StringTok{'>'}\NormalTok{)}
+\KeywordTok{table}\NormalTok{(Mut}\OperatorTok{$}\NormalTok{Subst) }\CommentTok{# light chain notation is be default}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  A>C  A>G  A>T  C>A  C>G  C>T  G>A  G>C  G>T  T>A  T>C  T>G 
+##   91  481   72  167   22  771 3663  119   49   29 2120   27
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(Mut}\OperatorTok{$}\NormalTok{Tier2) }\CommentTok{# cancer tissue}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##         Biliary         Bladder Bone/SoftTissue          Breast          Cervix 
+##              90              99             155             689              38 
+##             CNS    Colon/Rectum       Esophagus       Head/Neck          Kidney 
+##             262             224             409             146             822 
+##           Liver            Lung        Lymphoid         Myeloid           Ovary 
+##            1273             268             316              78             402 
+##        Pancreas        Prostate            Skin         Stomach         Thyroid 
+##             861             739             217             210             168 
+##          Uterus 
+##             145
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Mut}\OperatorTok{$}\NormalTok{tumor_var_freq =}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{gsub}\NormalTok{(}\StringTok{'%'}\NormalTok{,}\StringTok{''}\NormalTok{,Mut}\OperatorTok{$}\NormalTok{tumor_var_freq))}
+\KeywordTok{summary}\NormalTok{(Mut}\OperatorTok{$}\NormalTok{tumor_var_freq)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    0.01    1.68    4.37   19.96   25.39   99.86
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(Mut}\OperatorTok{$}\NormalTok{position, }\DataTypeTok{breaks =} \DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{01.CancerDataSet_files/figure-latex/unnamed-chunk-1-1.pdf}
+\#\#\#\# 2. create a dataset with tissue-specific turnover rates
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CancerTissue =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'Bladder'}\NormalTok{,}\StringTok{'Bone/SoftTissue'}\NormalTok{,}\StringTok{'Breast'}\NormalTok{,}\StringTok{'Biliary'}\NormalTok{,}\StringTok{'Cervix'}\NormalTok{,}\StringTok{'Lymphoid'}\NormalTok{,}\StringTok{'Myeloid'}\NormalTok{,}\StringTok{'Colon/Rectum'}\NormalTok{,}\StringTok{'Prostate'}\NormalTok{,}\StringTok{'Esophagus'}\NormalTok{,}\StringTok{'Stomach'}\NormalTok{,}\StringTok{'CNS'}\NormalTok{,}\StringTok{'Head/Neck'}\NormalTok{,}\StringTok{'Kidney'}\NormalTok{,}\StringTok{'Liver'}\NormalTok{,}\StringTok{'Lung'}\NormalTok{,}\StringTok{'Ovary'}\NormalTok{,}\StringTok{'Pancreas'}\NormalTok{,}\StringTok{'Skin'}\NormalTok{,}\StringTok{'Thyroid'}\NormalTok{,}\StringTok{'Uterus'}\NormalTok{)  }
+\NormalTok{TurnOverDays =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{200}\NormalTok{,}\DecValTok{5373}\NormalTok{,}\FloatTok{84.5}\NormalTok{,}\DecValTok{200}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{30}\NormalTok{,}\DecValTok{30}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{120}\NormalTok{,}\DecValTok{11}\NormalTok{,}\FloatTok{5.5}\NormalTok{,}\DecValTok{10000}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DecValTok{1000}\NormalTok{,}\DecValTok{400}\NormalTok{,}\DecValTok{5143}\NormalTok{,}\DecValTok{11000}\NormalTok{,}\DecValTok{360}\NormalTok{,}\DecValTok{147}\NormalTok{,}\DecValTok{4138}\NormalTok{,}\DecValTok{4}\NormalTok{); }\KeywordTok{length}\NormalTok{(TurnOverDays)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 21
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Turn =}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(CancerTissue,TurnOverDays)}
+\NormalTok{Turn =}\StringTok{ }\NormalTok{Turn[}\KeywordTok{order}\NormalTok{(Turn}\OperatorTok{$}\NormalTok{TurnOverDays),]}
+\NormalTok{Turn}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       CancerTissue TurnOverDays
+## 21          Uterus          4.0
+## 8     Colon/Rectum          5.0
+## 11         Stomach          5.5
+## 5           Cervix          6.0
+## 10       Esophagus         11.0
+## 13       Head/Neck         16.0
+## 6         Lymphoid         30.0
+## 7          Myeloid         30.0
+## 3           Breast         84.5
+## 9         Prostate        120.0
+## 19            Skin        147.0
+## 1          Bladder        200.0
+## 4          Biliary        200.0
+## 18        Pancreas        360.0
+## 15           Liver        400.0
+## 14          Kidney       1000.0
+## 20         Thyroid       4138.0
+## 16            Lung       5143.0
+## 2  Bone/SoftTissue       5373.0
+## 12             CNS      10000.0
+## 17           Ovary      11000.0
+\end{verbatim}
+
+HypMut\(AhGhDummy = 0 for (i in 1:nrow(HypMut)) {if(HypMut\)Subst{[}i{]}
+== `T\textgreater C') \{HypMut\$AhGhDummy{[}i{]} = 1\}\}
+
+ANALYSES:
+
+\hypertarget{if-tissue-specific-hypoxia-is-associated-with-turnover-rate-yes-there-is-a-trend}{%
+\subparagraph{1: if tissue-specific hypoxia is associated with turnover
+rate? YES, there is a
+trend}\label{if-tissue-specific-hypoxia-is-associated-with-turnover-rate-yes-there-is-a-trend}}
+
+Agg =
+aggregate(HypMut\(hypoxia_score_buffa, by = list(HypMut\)Tier2,HypMut\(TurnOverDays), FUN = median) names(Agg) = c('CancerTissue','TurnOverDays','MedianHypoxiaScoreBuffa') plot(Agg\)TurnOverDays,Agg\(MedianHypoxiaScoreBuffa) cor.test(Agg\)TurnOverDays,Agg\$MedianHypoxiaScoreBuffa,
+method = `spearman', alternative = `less') \# rho = -0.44, p = 0.02704
+
+\hypertarget{if-slow--middle--and-fast--dividing-tissues-as-in-biorxiv-have-different-hypoxia-n-19-n-828}{%
+\subparagraph{2: if slow- middle- and fast- dividing tissues (as in
+BioRxiv) have different hypoxia (N = 19, N =
+828)?}\label{if-slow--middle--and-fast--dividing-tissues-as-in-biorxiv-have-different-hypoxia-n-19-n-828}}
+
+\hypertarget{a-if-there-is-correlation-between-vaf-and-hypoxia-yes-advanced-cancers-with-high-vaf-are-more-hypoxic}{%
+\subparagraph{3A: if there is correlation between VAF and hypoxia? \#
+YES!!! advanced cancers (with high VAF) are more
+hypoxic}\label{a-if-there-is-correlation-between-vaf-and-hypoxia-yes-advanced-cancers-with-high-vaf-are-more-hypoxic}}
+
+cor.test(HypMut\(tumor_var_freq,HypMut\)hypoxia\_score\_buffa, method =
+`spearman') \# very positive Agg =
+aggregate(list(HypMut\(hypoxia_score_buffa,HypMut\)tumor\_var\_freq), by
+= list(HypMut\(sample,HypMut\)Tier2), FUN = median) names(Agg) =
+c(`sample',`Tier2',`MedianHypoxiaScoreBuffa',`MedianVaf')
+cor.test(Agg\(MedianHypoxiaScoreBuffa,Agg\)MedianVaf, method =
+`spearman') \# still positive
+
+\hypertarget{b-if-there-is-correlation-between-vaf-and-hypoxia-within-numerous-cancer-types-the-strongest-correlation-minimal-p-is-in-the-most-numerous-kidney}{%
+\subparagraph{3B: if there is correlation between VAF and hypoxia within
+numerous cancer types? (the strongest correlation (minimal p) is in the
+most numerous
+kidney)}\label{b-if-there-is-correlation-between-vaf-and-hypoxia-within-numerous-cancer-types-the-strongest-correlation-minimal-p-is-in-the-most-numerous-kidney}}
+
+names(HypMut) Patients = HypMut{[},c(1,3,10,11){]}; Patients =
+unique(Patients); nrow(Patients) \# 828 Tissues =
+data.frame(table(Patients\(Tier2)) # 19 vs 21? Tissues = Tissues[order(-Tissues\)Freq),{]}
+NumerousTissues = Tissues{[}Tissues\$Freq \textgreater= 50,{]}\$Var1;
+length(NumerousTissues) NumerousTissues \# Breast Kidney Liver Lung
+Ovary Pancreas
+
+cor.test(Agg{[}Agg\$Tier2 ==
+NumerousTissues{[}1{]},{]}\(MedianHypoxiaScoreBuffa,Agg[Agg\)Tier2 ==
+NumerousTissues{[}1{]},{]}\(MedianVaf, method = 'spearman') # cor.test(Agg[Agg\)Tier2
+== NumerousTissues{[}2{]},{]}\(MedianHypoxiaScoreBuffa,Agg[Agg\)Tier2 ==
+NumerousTissues{[}2{]},{]}\(MedianVaf, method = 'spearman') # !!! cor.test(Agg[Agg\)Tier2
+== NumerousTissues{[}3{]},{]}\(MedianHypoxiaScoreBuffa,Agg[Agg\)Tier2 ==
+NumerousTissues{[}3{]},{]}\(MedianVaf, method = 'spearman') # !!! cor.test(Agg[Agg\)Tier2
+== NumerousTissues{[}4{]},{]}\(MedianHypoxiaScoreBuffa,Agg[Agg\)Tier2 ==
+NumerousTissues{[}4{]},{]}\(MedianVaf, method = 'spearman') # cor.test(Agg[Agg\)Tier2
+== NumerousTissues{[}5{]},{]}\(MedianHypoxiaScoreBuffa,Agg[Agg\)Tier2 ==
+NumerousTissues{[}5{]},{]}\(MedianVaf, method = 'spearman') # cor.test(Agg[Agg\)Tier2
+== NumerousTissues{[}6{]},{]}\(MedianHypoxiaScoreBuffa,Agg[Agg\)Tier2 ==
+NumerousTissues{[}6{]},{]}\$MedianVaf, method = `spearman') \#
+
+\hypertarget{if-there-is-correlation-between-ag-and-hypoxia-whole-dataset-and-within-numerous-cancer-types}{%
+\subparagraph{4: if there is correlation between A\textgreater G and
+hypoxia (Whole dataset and within numerous cancer
+types)?}\label{if-there-is-correlation-between-ag-and-hypoxia-whole-dataset-and-within-numerous-cancer-types}}
+
+\hypertarget{if-there-is-correlation-between-absolute-number-of-mtdna-mutationsand-hypoxia-whole-dataset-and-within-numerous-cancer-types}{%
+\subparagraph{5: if there is correlation between Absolute number of
+mtDNA mutationsand hypoxia (Whole dataset and within numerous cancer
+types)?}\label{if-there-is-correlation-between-absolute-number-of-mtdna-mutationsand-hypoxia-whole-dataset-and-within-numerous-cancer-types}}
+
+names(HypMut) Patients = HypMut{[},c(1,3,10,11){]}; Patients =
+unique(Patients); nrow(Patients) \# 828 Tissues =
+data.frame(table(Patients\(Tier2)) # 19 vs 21? NumerousTissues = Tissues[Tissues\)Freq
+\textgreater= 50,{]}\$Var1; length(NumerousTissues) NumerousTissues \#
+Breast Kidney Liver Lung Ovary Pancreas
+
+i = 1 temp = HypMut{[}HypMut\$Tier2 == NumerousTissues{[}i{]},{]}
+summary(glm(temp\(AhGhDummy ~ temp\)hypoxia\_score\_buffa, family =
+binomial()))
+
+OLD CODE:
+
+\hypertarget{ahghfr-is-expected-to-be-higher-among-high-vaf-and-lower-among-hypoxic}{%
+\subsection{AhGhfr is expected to be higher among high VAF and lower
+among
+hypoxic}\label{ahghfr-is-expected-to-be-higher-among-high-vaf-and-lower-among-hypoxic}}
+
+TvVec =
+c(`A\textgreater T',`A\textgreater C',`C\textgreater A',`C\textgreater G',`T\textgreater A',`T\textgreater G',`G\textgreater C',`G\textgreater T')
+
+table(HypMut\(Subst) # light chain str(HypMut\)tumor\_var\_freq)
+HypMut\(AhGhDummy = 0 for (i in 1:nrow(HypMut)) {if(HypMut\)Subst{[}i{]}
+== `T\textgreater C')
+\{HypMut\(AhGhDummy[i] = 1}} table(HypMut\)AhGhDummy)
+summary(glm(HypMut\(AhGhDummy ~ HypMut\)hypoxia\_score\_ragnum +
+HypMut\(tumor_var_freq, family = binomial())) summary(glm(HypMut\)AhGhDummy
+\textasciitilde{} HypMut\$tumor\_var\_freq, family = binomial())) \# a
+bit
+
+\hypertarget{frequencies-of-all-four-transitions-positively-correlate-with-hypoxic-score-the-higher-the-score-the-higher-vaf-early-origin-andor-more-relaxed-mtdna-selection-in-hypoxic-cancers}{%
+\subsubsection{frequencies of all four transitions positively correlate
+with hypoxic score (the higher the score =\textgreater{} the higher VAF
+=\textgreater{} early origin and/or more relaxed mtDNA selection in
+hypoxic
+cancers)}\label{frequencies-of-all-four-transitions-positively-correlate-with-hypoxic-score-the-higher-the-score-the-higher-vaf-early-origin-andor-more-relaxed-mtdna-selection-in-hypoxic-cancers}}
+
+summary(lm(HypMut\(hypoxia_score_ragnum ~ HypMut\)tumor\_var\_freq)) \#
+very positive =\textgreater{} the higher the hypoxia the higher VAF (the
+older all mutations =\textgreater{} originated at healthy tissues)
+summary(lm(HypMut{[}HypMut\$Subst ==
+`T\textgreater C',{]}\(hypoxia_score_ragnum ~ HypMut[HypMut\)Subst ==
+`T\textgreater C',{]}\(tumor_var_freq)) # positive summary(lm(HypMut[HypMut\)Subst
+== `C\textgreater T',{]}\(hypoxia_score_ragnum ~ HypMut[HypMut\)Subst ==
+`C\textgreater T',{]}\(tumor_var_freq)) # positive summary(lm(HypMut[HypMut\)Subst
+== `G\textgreater A',{]}\(hypoxia_score_ragnum ~ HypMut[HypMut\)Subst ==
+`G\textgreater A',{]}\(tumor_var_freq)) # positive summary(lm(HypMut[HypMut\)Subst
+== `A\textgreater G',{]}\(hypoxia_score_ragnum ~ HypMut[HypMut\)Subst ==
+`A\textgreater G',{]}\(tumor_var_freq)) # positive summary(lm(HypMut[HypMut\)Subst
+\%in\% TvVec,{]}\(hypoxia_score_ragnum ~ HypMut[HypMut\)Subst \%in\%
+TvVec,{]}\$tumor\_var\_freq)) \# positive
+
+\hypertarget{emerging-polg-signature-check-it}{%
+\section{emerging PolG signature? check
+it!}\label{emerging-polg-signature-check-it}}
+
+\hypertarget{can-we-associate-hypoxia-with-cell-division-rate-of-each-tissue---yes-correlation-is-weak-but-expected-direction}{%
+\subsection{can we associate hypoxia with cell division rate of each
+tissue - YES (correlation is weak, but expected
+direction)}\label{can-we-associate-hypoxia-with-cell-division-rate-of-each-tissue---yes-correlation-is-weak-but-expected-direction}}
+
+\hypertarget{from-cancer.differencesbetweencancertypes.r}{%
+\section{from
+Cancer.DifferencesBetweenCancerTypes.R}\label{from-cancer.differencesbetweencancertypes.r}}
+
+\hypertarget{analyses-1}{%
+\section{analyses}\label{analyses-1}}
+
+\hypertarget{if-we-repeat-the-same-with-rare-substitutions-only---effect-is-even-better---why}{%
+\section{if we repeat the same with rare substitutions only - effect is
+even better -
+why?}\label{if-we-repeat-the-same-with-rare-substitutions-only---effect-is-even-better---why}}
+
+summary(HypMut\(tumor_var_freq) # 5.3700 Agg = aggregate(HypMut[HypMut\)tumor\_var\_freq
+\textless1.79,{]}\(hypoxia_score_buffa, by = list(HypMut[HypMut\)tumor\_var\_freq
+\textless1.79,{]}\(Tier2,HypMut[HypMut\)tumor\_var\_freq
+\textless1.79,{]}\(TurnOverDays), FUN = median) names(Agg) = c('CancerTissue','TurnOverDays','MedianHypoxiaScoreBuffa') plot(Agg\)TurnOverDays,Agg\(MedianHypoxiaScoreBuffa) cor.test(Agg\)TurnOverDays,Agg\$MedianHypoxiaScoreBuffa,
+method = `spearman', alternative = `less') \# 0.02704
+
+\hypertarget{can-we-rerun-the-same-lm-where-instead-of-tc-there-is-a-hypoxia}{%
+\subsection{can we rerun the same lm where instead of T\textgreater C
+there is a
+hypoxia}\label{can-we-rerun-the-same-lm-where-instead-of-tc-there-is-a-hypoxia}}
+
+summary(lm(HypMut\(hypoxia_score_buffa ~ HypMut\)tumor\_var\_freq+HypMut\(TurnOverDays)) # positive both coefficients!!! summary(lm(HypMut\)hypoxia\_score\_buffa
+\textasciitilde{} 0 + HypMut\(tumor_var_freq+HypMut\)TurnOverDays)) \#
+positive both coefficients!!!
+
+Final\(OtherMut = 1-Final\)AhGhfr colors = c(``red'',``black'')
+
+FinalNew = data.frame(Final\(AhGhfr, Final\)OtherMut,
+rownames(FinalNew),
+Final\(hypoxia_score_buffa) FinalHypo = FinalNew[FinalNew\)Final.hypoxia\_score\_buffa\textgreater=32,{]}
+FinalHypo\(Final.hypoxia_score_buffa = NULL FinalNorm = FinalNew[FinalNew\)Final.hypoxia\_score\_buffa\textless32,{]}
+FinalNorm\$Final.hypoxia\_score\_buffa = NULL
+
+a = FinalHypo \%\textgreater\% gather(subtype, freq,
+Final.AhGhfr:Final.OtherMut)
+
+b = FinalNorm \%\textgreater\% gather(subtype, freq,
+Final.AhGhfr:Final.OtherMut)
+
+pdf(``../../Body/4Figures/Cancer.Hypoxia.pdf'', width=7, height=3)
+ggplot(a, aes(fill=subtype, y=freq, x=rownames.FinalNew.)) +
+geom\_bar(position=``fill'',
+stat=``identity'')+scale\_fill\_manual(values=c(``red'',``black''))
+
+ggplot(b, aes(fill=subtype, y=freq, x=rownames.FinalNew.)) +
+geom\_bar(position=``fill'',
+stat=``identity'')+scale\_fill\_manual(values=c(``red'',``black''))
+dev.off()
+
+\end{document}
