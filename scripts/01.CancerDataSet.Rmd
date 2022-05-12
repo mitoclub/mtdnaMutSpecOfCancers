@@ -128,6 +128,8 @@ summary(glm(Mut[!is.na(Mut$TBSS),]$DummyChTh ~ Mut[!is.na(Mut$TBSS),]$tumor_var_
 summary(glm(Mut$DummyAhGh ~ Mut$TBSS + Mut$TurnOverDays + Mut$tumor_var_freq, family = binomial)) 
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$TBSS + Mut[!is.na(Mut$TBSS),]$TurnOverDays + Mut[!is.na(Mut$TBSS),]$tumor_var_freq, family = binomial)) # the same => glm eliminates all rows with at least one NA
 
+summary(glm(Mut$DummyAhGh ~ Mut$TBSS + Mut$DummyNotFastTurnOver + Mut$tumor_var_freq, family = binomial)) 
+
 summary(glm(Mut$DummyAhGh ~ Mut$TurnOverDays + Mut$tumor_var_freq, family = binomial)) 
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$TurnOverDays + Mut[!is.na(Mut$TBSS),]$tumor_var_freq, family = binomial))
 
