@@ -76,7 +76,7 @@ for (i in 1:nrow(Mut))
   if (Mut$position[i] > 576 & Mut$position[i] < 5721) # minor arc
     {Mut$TBSS[i] = 16569-(5721 - Mut$position[i])*2} # L-strand replication origin (locus MT-OLR, 5721 - 5798)
   if (Mut$position[i] > 5798 & Mut$position[i] < 16024) # major arc
-    {Mut$TBSS[i] = 16569-(Mut$position[i] - 5798)*2}  
+    {Mut$TBSS[i] = (Mut$position[i] - 5798)*2}  
 }
 summary(Mut$TBSS)
 plot(Mut$position,Mut$TBSS) 
