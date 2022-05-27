@@ -16,6 +16,7 @@ library(kableExtra)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(lsa) # install.packages("lsa"); install.packages("SnowballC")
 ```
 ## Background
 <br>
@@ -136,7 +137,100 @@ summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$TurnOverDa
 summary(glm(Mut$DummyAhGh ~ Mut$DummyNotFastTurnOver + Mut$tumor_var_freq, family = binomial)) # !!!!
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$DummyNotFastTurnOver + Mut[!is.na(Mut$TBSS),]$tumor_var_freq, family = binomial)) # still significant but both p-values become higher
 ```
+<br><br>
 
+### 7. cosinus distance between different cancer types, VAF groups and locations
+Cosine similarity is lower between biologically different sets of mutations: hypoxic (fast turnover) versus normoxic (low turnover). We need to compare it with random split of mutations! 
+Cosine similarity is lower between biologically different sets of mutations: low VAF (recent and hypoxic) versus high VAF (old and normoxic)
+
+***
+```{r}
+# derive context for each mutation
+for (i in 1:nrow(Mut))
+{
+Mut$SubstWithContext[i] = paste(unlist(strsplit(Mut$X[i],''))[10],Mut$Subst[i],unlist(strsplit(Mut$X.1[i],''))[1],sep = '')  
+}
+
+# derive 192 MutSpec for different groups of mutations (by tissue type, VAF, location):
+
+FunCosineSimOfTwoLists <- function(a,b) 
+  {
+  A = data.frame(table(a)); names(A) = c('subst','AFreq')
+  B = data.frame(table(b)); names(B) = c('subst','BFreq')
+  AB = merge(A,B)
+  cos = cosine(AB$AFreq, AB$BFreq) # 0.98
+  print (cos)
+  }
+
+# TurnOverRate
+table(Mut$DummySlowTurnOver)
+a = Mut[Mut$DummySlowTurnOver == 1,]$SubstWithContext
+b = Mut[Mut$DummySlowTurnOver == 0,]$SubstWithContext
+FunCosineSimOfTwoLists(a,b) # 0.985
+
+# VAF
+summary(Mut$tumor_var_freq) # 4.37
+a = Mut[Mut$tumor_var_freq <= 4.37,]$SubstWithContext
+b = Mut[Mut$tumor_var_freq > 4.37,]$SubstWithContext
+FunCosineSimOfTwoLists(a,b) # 0.986
+a = Mut[Mut$tumor_var_freq <= 1.68,]$SubstWithContext
+b = Mut[Mut$tumor_var_freq > 25.39,]$SubstWithContext
+Reality = as.numeric(FunCosineSimOfTwoLists(a,b)) # 0.967
+
+PermVec = c()
+for (permut in 1:1000)
+{
+Mut$ReSampled.tumor_var_freq = sample(Mut$tumor_var_freq)
+a = Mut[Mut$ReSampled.tumor_var_freq <= 1.68,]$SubstWithContext
+b = Mut[Mut$ReSampled.tumor_var_freq > 25.39,]$SubstWithContext
+PermVec = c(PermVec,as.numeric(FunCosineSimOfTwoLists(a,b)))
+}
+length(PermVec)
+length(PermVec[PermVec < Reality])/length(PermVec) # p = 0.18
+
+
+# Slow versus High VAF (don't consider intersected mutations which are in both)
+a = Mut[Mut$DummySlowTurnOver == 1,]$SubstWithContext # slow () 
+b = Mut[Mut$tumor_var_freq > 4.37,]$SubstWithContext # high VAF
+FunCosineSimOfTwoLists(a,b) # 0.9949
+
+# MIXED GROUP (Slow and Recent) VS ANOTHER MIXED GROUP (Fast and Old) 
+a = Mut[Mut$DummySlowTurnOver == 1 & Mut$tumor_var_freq <= 4.37,]$SubstWithContext
+b = Mut[Mut$DummySlowTurnOver == 0 & Mut$tumor_var_freq > 4.37,]$SubstWithContext
+FunCosineSimOfTwoLists(a,b) # 0.978 
+
+# VERY MIXED GROUP (Slow and very Recent) VS ANOTHER VERY MIXED GROUP (Fast and very Old) 
+a = Mut[Mut$DummySlowTurnOver == 1 & Mut$tumor_var_freq <= 1.68,]$SubstWithContext
+b = Mut[Mut$DummySlowTurnOver == 0 & Mut$tumor_var_freq > 25.39,]$SubstWithContext
+FunCosineSimOfTwoLists(a,b) # 0.953 
+
+#  NORMOXIC (Slow and Old) VS HYPOXIC (Fast and Recent)
+a = Mut[Mut$DummySlowTurnOver == 1 & Mut$tumor_var_freq > 4.37,]$SubstWithContext
+b = Mut[Mut$DummySlowTurnOver == 0 & Mut$tumor_var_freq <= 4.37,]$SubstWithContext
+FunCosineSimOfTwoLists(a,b) # 0.968 
+
+# VERY NORMOXIC (Slow and Old) VS VERY HYPOXIC (Fast and Recent)
+a = Mut[Mut$DummySlowTurnOver == 1 & Mut$tumor_var_freq > 25.39,]$SubstWithContext
+b = Mut[Mut$DummySlowTurnOver == 0 & Mut$tumor_var_freq <= 1.68,]$SubstWithContext
+Reality = as.numeric(FunCosineSimOfTwoLists(a,b)) # 0.942 
+
+PermVec = c()
+for (permut in 1:1000)
+{
+Mut$ReSampled.tumor_var_freq = sample(Mut$tumor_var_freq)
+Mut$ReSampled.DummySlowTurnOver = sample(Mut$DummySlowTurnOver)
+a = Mut[Mut$ReSampled.DummySlowTurnOver == 1 & Mut$ReSampled.tumor_var_freq > 25.39,]$SubstWithContext
+b = Mut[Mut$ReSampled.DummySlowTurnOver == 0 & Mut$ReSampled.tumor_var_freq <= 1.68,]$SubstWithContext
+PermVec = c(PermVec,as.numeric(FunCosineSimOfTwoLists(a,b)))
+}
+length(PermVec)
+length(PermVec[PermVec < Reality])/length(PermVec) # p = 0.017
+
+# may be we have to use only Ts for cosine similarity?
+
+
+
+```
 
 ### OOOOOLD CODE - DELETE / CHANGE 
 *** 
