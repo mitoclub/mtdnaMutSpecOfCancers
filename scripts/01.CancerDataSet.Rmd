@@ -1,5 +1,5 @@
 ---
-title: "Mitochondial mutational spectrum of cancer as a function of position, tissue and VAF"
+title: "Mitochondial mutational spectrum of cancer as a function of position (TBSS), tissue turn overrate  and VAF"
 author: "Konstantin Popadin"
 date: "11/05/2022"
 output:
@@ -35,8 +35,15 @@ Mut$Subst = paste(Mut$ref,Mut$var,sep = '>')
 table(Mut$Subst) # light chain notation is be default
 table(Mut$Tier2) # cancer tissue
 Mut$tumor_var_freq = as.numeric(gsub('%','',Mut$tumor_var_freq))
-summary(Mut$tumor_var_freq)
+summary(Mut$tumor_var_freq) # 0.01    1.68    4.37   19.96   25.39   99.86
 hist(Mut$position, breaks = 200)
+Mut$DummyHighVaf = 0
+for (i in 1:nrow(Mut))
+{
+  if (Mut$tumor_var_freq[i] >= 25.39) # 4.37
+  {Mut$DummyHighVaf[i] = 1}  
+}
+table(Mut$DummyHighVaf)
 ```
 <br>
 There are many mutations from D loop [16024 - 576 according to MitoWheel]. 
@@ -51,24 +58,23 @@ CancerTissue = c('Bladder','Bone/SoftTissue','Breast','Biliary','Cervix','Lympho
 TurnOverDays = c(200,5373,84.5,200,6,30,30,5,120,11,5.5,10000,16,1000,400,5143,11000,360,147,4138,4); length(TurnOverDays)
 Turn = data.frame(CancerTissue,TurnOverDays)
 Turn = Turn[order(Turn$TurnOverDays),]
-summary(Turn$TurnOverDays)
-Turn$DummyNotFastTurnOver = 0;
+summary(Turn$TurnOverDays) #  4      16     147    1823    1000   11000
+Turn$DummyNotFastTurnOver = 0; # !!!! 
 Turn$DummySlowTurnOver = 0;
 Turn$DummyVerySlowTurnOver = 0;
 for (i in 1:nrow(Turn)) 
 { 
 if (Turn$TurnOverDays[i] > 1000) {Turn$DummyVerySlowTurnOver[i] = 1} # if  slower than the third quartile (1000 days)
-if (Turn$TurnOverDays[i] > 147)  {Turn$DummySlowTurnOver[i] = 1}  # if  slower than the median (147 days)
+if (Turn$TurnOverDays[i] > 147)  {Turn$DummySlowTurnOver[i] = 1}  # if  slower than the median (147 days) median in Mut == 360
 if (Turn$TurnOverDays[i] > 16)  {Turn$DummyNotFastTurnOver[i] = 1}  # if  slower than the median (147 days)
 }
 
-Turn
 Mut = merge(Mut,Turn, by.x = 'Tier2', by.y = 'CancerTissue')
 summary(Mut$TurnOverDays) # there are no NA - good
 ```
 <br><br>
 
-#### 3. Derive TBSS for each position, positions within D-loop and Ol will have NA
+#### 3. Derive TBSS and DummyHighTbss for each position, positions within D-loop and Ol will have NA
 ***
 ```{r}
 Mut$TBSS = NA
@@ -80,6 +86,22 @@ for (i in 1:nrow(Mut))
     {Mut$TBSS[i] = (Mut$position[i] - 5798)*2}  
 }
 summary(Mut$TBSS)
+
+Mut$DummyHighTbss = NA
+for (i in 1:nrow(Mut))
+{ # i = 1
+  if (!is.na(Mut$TBSS[i]))
+  {
+  if (Mut$TBSS[i] >= median(Mut[!is.na(Mut$TBSS),]$TBSS)) # 11189
+  {Mut$DummyHighTbss[i] = 1}
+  if (Mut$TBSS[i] < median(Mut[!is.na(Mut$TBSS),]$TBSS)) # 11189
+  {Mut$DummyHighTbss[i] = 0}
+  }
+}
+summary(Mut$DummyHighTbss)
+table(Mut$DummyHighTbss)
+
+
 plot(Mut$position,Mut$TBSS) 
 ```
 <br><br>
@@ -102,34 +124,91 @@ table(Mut$DummyTv)
 ```
 <br><br>
 
-### 5. univariate analyses: DummyAhGh ~ TBSS(NA), DummyAhGh ~ + TurnOverDays(*), DummyAhGh ~ + tumor_var_freq(***)
+### 5. univariate analyses: DummyAhGh ~ TBSS, DummyAhGh ~ + TurnOverDays(*), DummyAhGh ~ + tumor_var_freq(***)
 ***
 ```{r}
-summary(glm(Mut$DummyAhGh ~ Mut$TBSS, family = binomial)) # marginally significant and negative (probably due to strong positive effect of C>T)
-summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$TBSS, family = binomial))
-summary(glm(Mut$DummyChTh ~ Mut$TBSS, family = binomial))
 
-summary(glm(Mut$DummyAhGh ~ Mut$TurnOverDays, family = binomial))
+### AhGh ~ TBSS (logistic regression, Mann-Whitney U test);
+### AhGh ~ DummyHighTbss (fisher test)
+
+summary(glm(Mut$DummyAhGh ~ Mut$TBSS, family = binomial)) # 0.0158 and positive
+summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$TBSS, family = binomial)) # 0.0158 and positive
+
+wilcox.test(Mut[Mut$DummyAhGh == 0,]$TBSS,Mut[Mut$DummyAhGh == 1,]$TBSS) # significant
+boxplot(Mut[Mut$DummyAhGh == 0,]$TBSS,Mut[Mut$DummyAhGh == 1,]$TBSS, notch = TRUE) # significant
+
+AgInHighTbss = nrow(Mut[Mut$DummyAhGh == 1 & !is.na(Mut$DummyHighTbss) & Mut$DummyHighTbss == 1,])
+AgInLowTbss = nrow(Mut[Mut$DummyAhGh == 1 & !is.na(Mut$DummyHighTbss) & Mut$DummyHighTbss == 0,])
+NotAgInHighTbss = nrow(Mut[Mut$DummyAhGh == 0 & !is.na(Mut$DummyHighTbss) & Mut$DummyHighTbss == 1,])
+NotAgInLowTbss = nrow(Mut[Mut$DummyAhGh == 0 & !is.na(Mut$DummyHighTbss) & Mut$DummyHighTbss == 0,])
+
+X = cbind(c(AgInHighTbss,AgInLowTbss),c(NotAgInHighTbss,NotAgInLowTbss))
+fisher.test(X) # odds = 1.19, p = 0.0014
+mosaicplot(X)
+
+summary(glm(Mut$DummyChTh ~ Mut$TBSS, family = binomial)) # 0.06 
+
+### AhGh ~ TurnOver (logistic)
+### AhGh ~ DummyNotFastTurnOver (> lower quartile)! We need to explain - why we took this metrique! 
+
+summary(glm(Mut$DummyAhGh ~ Mut$TurnOverDays, family = binomial)) # 0.0377 and positive
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$TurnOverDays, family = binomial))
 
-summary(glm(Mut$DummyChTh ~ Mut$TurnOverDays, family = binomial))
+wilcox.test(Mut[Mut$DummyAhGh == 1,]$TurnOverDays,Mut[Mut$DummyAhGh == 0,]$TurnOverDays) # nothing
+
+Turn$DummySlowTurnOver
+
+AgInSlowTurnOver = nrow(Mut[Mut$DummyAhGh == 1 & Mut$DummyNotFastTurnOver == 1,])
+AgInHighTurnOver = nrow(Mut[Mut$DummyAhGh == 1 & Mut$DummyNotFastTurnOver == 0,])
+NotAgInSlowTurnOver = nrow(Mut[Mut$DummyAhGh == 0 & Mut$DummyNotFastTurnOver == 1,])
+NotAgInHighTurnOver = nrow(Mut[Mut$DummyAhGh == 0 & Mut$DummyNotFastTurnOver == 0,])
+
+X = cbind(c(AgInSlowTurnOver,AgInHighTurnOver),c(NotAgInSlowTurnOver,NotAgInHighTurnOver))
+fisher.test(X) # odds = 1.25, p = 0.002
+mosaicplot(X)
+
+summary(glm(Mut$DummyChTh ~ Mut$TurnOverDays, family = binomial)) # 0.6
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyChTh ~ Mut[!is.na(Mut$TBSS),]$TurnOverDays, family = binomial))
+
+### AhGh ~ VAF (logistic)
+### AhGh ~ VAF Dummy (median and lower quartile were not siginficant, took upper quartile)
 
 summary(glm(Mut$DummyAhGh ~ Mut$tumor_var_freq, family = binomial))
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$tumor_var_freq, family = binomial))
+
+wilcox.test(Mut[Mut$DummyAhGh == 1,]$tumor_var_freq,Mut[Mut$DummyAhGh == 0,]$tumor_var_freq)
+boxplot(Mut[Mut$DummyAhGh == 1,]$tumor_var_freq,Mut[Mut$DummyAhGh == 0,]$tumor_var_freq)
+
+AgInHighVaf = nrow(Mut[Mut$DummyAhGh == 1 & Mut$DummyHighVaf == 1,])
+AgInLowVaf = nrow(Mut[Mut$DummyAhGh == 1 & Mut$DummyHighVaf == 0,])
+NotAgInHighVaf = nrow(Mut[Mut$DummyAhGh == 0 & Mut$DummyHighVaf == 1,])
+NotAgInLowVaf = nrow(Mut[Mut$DummyAhGh == 0 & Mut$DummyHighVaf == 0,])
+
+X = cbind(c(AgInHighVaf,AgInLowVaf),c(NotAgInHighVaf,NotAgInLowVaf))
+fisher.test(X) # odds = 1.16, p = 0.0102
+mosaicplot(X)
 
 summary(glm(Mut$DummyChTh ~ Mut$tumor_var_freq, family = binomial))
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyChTh ~ Mut[!is.na(Mut$TBSS),]$tumor_var_freq, family = binomial))
 ```
 <br><br>
 
-### 6. multivariate backward stepwise logistic regression: DummyAhGh ~ TBSS + TurnOverDays + tumor_var_freq
+### 6. multivariate backward stepwise logistic regression: DummyAhGh ~ TBSS + TurnOverDays + tumor_var_freq. We need to choose the best equation (several very similar are below). Interestingly, effect size is rather similar (scaled coefficients) and thus we can sum up votings (1 + 1 + 1) to derive the integer hypoxia level in our cosinus exersises.
+
 ***
 ```{r}
 summary(glm(Mut$DummyAhGh ~ Mut$TBSS + Mut$TurnOverDays + Mut$tumor_var_freq, family = binomial)) 
+summary(glm(Mut$DummyAhGh ~ scale(Mut$TBSS) + scale(Mut$TurnOverDays) + scale(Mut$tumor_var_freq), family = binomial)) 
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$TBSS + Mut[!is.na(Mut$TBSS),]$TurnOverDays + Mut[!is.na(Mut$TBSS),]$tumor_var_freq, family = binomial)) # the same => glm eliminates all rows with at least one NA
 
-summary(glm(Mut$DummyAhGh ~ Mut$TBSS + Mut$DummyNotFastTurnOver + Mut$tumor_var_freq, family = binomial)) 
+summary(glm(Mut$DummyAhGh ~ Mut$TBSS + Mut$DummyNotFastTurnOver + Mut$tumor_var_freq, family = binomial)) # !!!!!
+summary(glm(Mut$DummyAhGh ~ scale(Mut$TBSS) + scale(Mut$DummyNotFastTurnOver) + scale(Mut$tumor_var_freq), family = binomial)) # !!!!!
+
+summary(glm(Mut$DummyAhGh ~ Mut$DummyHighTbss + Mut$DummyNotFastTurnOver + Mut$tumor_var_freq, family = binomial)) # !!
+summary(glm(Mut$DummyAhGh ~ scale(Mut$DummyHighTbss) + scale(Mut$DummyNotFastTurnOver) + scale(Mut$tumor_var_freq), family = binomial)) # !!
+
+summary(glm(Mut$DummyAhGh ~ Mut$DummyHighTbss + Mut$DummyNotFastTurnOver + Mut$DummyHighVaf, family = binomial)) # !!
+summary(glm(Mut$DummyAhGh ~ scale(Mut$DummyHighTbss) + scale(Mut$DummyNotFastTurnOver) + scale(Mut$DummyHighVaf), family = binomial)) # !!
 
 summary(glm(Mut$DummyAhGh ~ Mut$TurnOverDays + Mut$tumor_var_freq, family = binomial)) 
 summary(glm(Mut[!is.na(Mut$TBSS),]$DummyAhGh ~ Mut[!is.na(Mut$TBSS),]$TurnOverDays + Mut[!is.na(Mut$TBSS),]$tumor_var_freq, family = binomial))
@@ -159,7 +238,7 @@ FunCosineSimOfTwoLists <- function(a,b)
   B = data.frame(table(b)); names(B) = c('subst','BFreq')
   AB = merge(A,B)
   cos = cosine(AB$AFreq, AB$BFreq) # 0.98
-  print (cos)
+  # print (cos)
   }
 
 # TurnOverRate
