@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ACC_LIST=data/external/human_mt_acc.txt
-GB_FILE=data/external/human_mt_seqs.gb
-LAG=0.4
+ACC_LIST=data/1raw/human_mt_acc.txt
+GB_FILE=data/1raw/human_mt_seqs.gb
+LAG=1
 
 touch $GB_FILE
 for acc in `cat $ACC_LIST`; do
