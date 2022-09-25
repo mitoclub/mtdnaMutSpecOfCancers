@@ -1,0 +1,1 @@
+esearch -db nuccore -query "ddbj_embl_genbank[filter] AND txid9606[orgn:noexp] AND complete-genome[title] AND mitochondrion[filter]" | efetch -format acc > data/external/human_mt_acc.txt
