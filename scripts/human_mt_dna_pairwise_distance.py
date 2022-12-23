@@ -20,12 +20,14 @@ for i, rec in tqdm.tqdm(enumerate(SeqIO.parse(path_to_genbank, format="gb")), to
         dloops.append((rec.id, cur_dloop))
     else:
         nexdloop += 1
+    #if i == 5000:
+    #    break
+
 print(len(dloops), npassed, nexdloop)
 
 
 dloops_clean = [x for x in dloops if len(x[1]) < 1300 and len(x[1]) > 1100]
 n = len(dloops_clean)
-# n = 1000
 data = []
 
 
@@ -41,7 +43,7 @@ def get_iterator():
             yield (i, j)
 
 print("Start computing")
-with Pool(24) as p:
+with Pool(80) as p:
     ds = p.map(get_distance, get_iterator())
 print("Computing done")
 
