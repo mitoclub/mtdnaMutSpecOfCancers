@@ -42,8 +42,8 @@ fig.set_size_inches(12, 6)
 ax.hist(dd, 250, color="dimgrey", edgecolor="white")
 ax2.hist(dd, 250, color="dimgrey", edgecolor="white")
 
-ax.set_xlim(0, 75)
-ax2.set_xlim(585, 675)
+ax.set_xlim(0, 85)
+ax2.set_xlim(587, 675)
 
 ax.spines['right'].set_visible(False)
 ax2.spines['left'].set_visible(False)
