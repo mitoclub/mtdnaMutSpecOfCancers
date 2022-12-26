@@ -32,37 +32,21 @@ def get_yticks_labels(a):
     return l
 
 
-# fig = plt.figure(figsize=(12, 4))
-# plt.grid(axis="y")
-# ax = fig.axes[0]
-# ax.set_axisbelow(True)
-# plt.hist(dd, 50, color="dimgrey", edgecolor="white")
-
-# ticks = ax.get_yticks()
-# yt_labels = get_yticks_labels(ticks)
-# print(ticks)
-# print(yt_labels)
-
-# plt.yticks(ticks, yt_labels)
-# plt.xlabel("Difference in D-loop, nt", fontdict=font)
-# plt.ylabel("Number of D-loop pairs", fontdict=font)
-# plt.show()
-# plt.savefig("./figures/dloop/dists.png")
 
 
 fig, (ax, ax2) = plt.subplots(1, 2, sharex=False, sharey=False, facecolor='w')
 fig.set_size_inches(12, 6)
-ax.hist(dd, 100, color="dimgrey", edgecolor="white")
-ax2.hist(dd, 100, color="dimgrey", edgecolor="white")
+ax.hist(dd, 250, color="dimgrey", edgecolor="white")
+ax2.hist(dd, 250, color="dimgrey", edgecolor="white")
 
-ax.set_xlim(0, 75)
-ax2.set_xlim(585, 700)
+ax.set_xlim(0, 55)
+ax2.set_xlim(585, 685)
 
 ax.spines['right'].set_visible(False)
 ax2.spines['left'].set_visible(False)
 ax2.yaxis.set_visible(False)
 
-d = .015  # how big to make the diagonal lines in axes coordinates
+d = .01  # how big to make the diagonal lines in axes coordinates
 # arguments to pass plot, just so we don't keep repeating them
 kwargs = dict(transform=ax.transAxes, color='k', clip_on=False)
 ax.plot((1-d, 1+d), (-d, +d), **kwargs)
