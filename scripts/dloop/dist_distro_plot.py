@@ -7,7 +7,7 @@ N = 55180
 # dd = np.concatenate([dd, np.random.randn(200000) * 10 + 624])
 dd = np.load("./data/dloop_pairwise_dists.npy")
 dd = dd[np.where(dd > 0)]
-
+print("data loaded")
 
 font = {
     'family': 'Arial',
