@@ -1,3 +1,7 @@
+"""
+https://support.sisense.com/kb/en/article/creating-charts-with-broken-axes
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -5,9 +9,10 @@ N = 55180
 
 # dd = np.random.randn(1000000) * 10 + 24
 # dd = np.concatenate([dd, np.random.randn(200000) * 10 + 624])
+# dd = dd[np.where(dd > 0)]
 dd = np.load("./data/dloop_pairwise_dists.npy")
-dd = dd[np.where(dd > 0)]
 print("data loaded")
+print(f"mead: {dd.mean():.2f}, median: {np.median(dd):.2f}")
 
 font = {
     'family': 'Arial',
@@ -32,15 +37,13 @@ def get_yticks_labels(a):
     return l
 
 
-
-
 fig, (ax, ax2) = plt.subplots(1, 2, sharex=False, sharey=False, facecolor='w')
 fig.set_size_inches(12, 6)
 ax.hist(dd, 250, color="dimgrey", edgecolor="white")
 ax2.hist(dd, 250, color="dimgrey", edgecolor="white")
 
-ax.set_xlim(0, 55)
-ax2.set_xlim(585, 685)
+ax.set_xlim(0, 75)
+ax2.set_xlim(585, 675)
 
 ax.spines['right'].set_visible(False)
 ax2.spines['left'].set_visible(False)
@@ -64,4 +67,4 @@ ax.set_yticks(ticks, yt_labels)
 ax.set_xlabel("Difference in D-loop, nt", fontdict=font, loc="right")
 ax.set_ylabel("Number of D-loop pairs", fontdict=font)
 # plt.show()
-plt.savefig("./figures/dloop/dists.png")
+plt.savefig("./figures/dloop/dists.pdf")
