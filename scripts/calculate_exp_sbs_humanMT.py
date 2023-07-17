@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 from Bio import SeqIO
 
-from mutspec.annotation import CodonAnnotation
-from mutspec.io import read_genbank_ref
+from mutspec_utils.annotation import CodonAnnotation
+from mutspec_utils.io import read_genbank_ref
 
 PATH_TO_SEQS = "./data/external/NC_012920.1.gb"
 

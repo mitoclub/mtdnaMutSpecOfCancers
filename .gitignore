@@ -7,3 +7,5 @@ data/external/fulltreeCodons.csv
 data/interim
 data/1raw/human_mt_genomes_refseq.fasta
 data/1raw/human_mt_seqs.gb
+*.npy
+*.tar.*
