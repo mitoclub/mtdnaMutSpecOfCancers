@@ -1,6 +1,6 @@
 Mut,ObsNum_gtex,ExpNum_gtex,MutSpec_gtex,ObsNum_tcga,ExpNum_tcga,MutSpec_tcga,ObsNum_gtex_percent,ObsNum_tcga_percent,ObsNum_percent_diff,ObsNum_percent_quotient
-T>G,0,260,0.0,3,263,0.01,0.0,0.36,0.36,0.0
 C>G,0,821,0.0,4,820,0.0,0.0,0.48,0.48,0.0
+T>G,0,260,0.0,3,263,0.01,0.0,0.36,0.36,0.0
 A>T,2,770,0.0,12,768,0.01,0.38,1.44,1.06,0.26
 G>C,1,95,0.01,4,96,0.02,0.19,0.48,0.29,0.4
 A>C,4,770,0.0,12,768,0.01,0.76,1.44,0.68,0.53
