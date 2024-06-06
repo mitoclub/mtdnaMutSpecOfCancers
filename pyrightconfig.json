@@ -1,5 +1,8 @@
 {
     "exclude": [
         "**/__pycache__",
+        "data/external",
+        "**/env_*",
+        "**/.git",
       ],
 }
