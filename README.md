@@ -1,6 +1,6 @@
 # mtdnaMutSpecOfCancers
 
-This repo contains all data and analyses for cancer part of mtDNA MutSpec project.
+This repo contains data and analyses of human mtDNA somatic mutations in cancer and healthy tissues.
 
 ## Download human mtDNA refseqs
 
